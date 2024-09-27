@@ -37,14 +37,13 @@ while True:
     # Process the image based on the current mode
     if current_mode == 0:  # Original
         processed_frame = frame
+        
     elif current_mode == 1:  # Grayscale
         processed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # Convert back to BGR for display
-        processed_frame = cv2.cvtColor(processed_frame, cv2.COLOR_GRAY2BGR)
+
     elif current_mode == 2:  # Edge Detection
         processed_frame = cv2.Canny(frame, 100, 200)
-        # Convert back to BGR for display
-        processed_frame = cv2.cvtColor(processed_frame, cv2.COLOR_GRAY2BGR)
+
 
     # Display the processed image
     cv2.imshow('Processed Image', processed_frame)
