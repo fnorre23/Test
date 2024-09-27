@@ -7,3 +7,5 @@ Oprettet mappen, testet eksekvering af kodeblokke ad gangen i runtime. Skal lige
 om vi fortsætter med flere loops, som åbner et vindue hver gang, eller en form for mode setting
 
 Testet oprettelse af binære billeder i runtime
+
+Lavet test af matchShapes af live feed mod et taget billede
