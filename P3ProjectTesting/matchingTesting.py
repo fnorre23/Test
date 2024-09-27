@@ -163,7 +163,7 @@ while True:
 
     # Find the contours of gesture1
     gesture1 = cv2.imread(filenames[0], cv2.IMREAD_GRAYSCALE)
-    _, gesture1 = cv2.threshold(gesture1, 127, 255, cv2.THRESH_BINARY)
+    #_, gesture1 = cv2.threshold(gesture1, 127, 255, cv2.THRESH_BINARY) #denne linje er muligvis overflødig
     contours1, hierarchy = cv2.findContours(gesture1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw the contours in red color
@@ -171,6 +171,8 @@ while True:
 
     # See if the contours of the live feed match the contours of gesture1
     match = cv2.matchShapes(contours[0], contours1[0], 1, 0.0)
+
+    #TODO: Sæt en match værdi op for alle gestures, og så et if-statement
 
     # If it has a 80% match, display in the bottom right corner
     if match < 0.2:
