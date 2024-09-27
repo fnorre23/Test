@@ -1,0 +1,3 @@
+TODO 
+1. Opsætte recognition af live billede mod binær billede
+2. Sende data til Unity baseret på hvilken gesture vises
