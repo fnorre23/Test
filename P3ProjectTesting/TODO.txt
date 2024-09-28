@@ -6,6 +6,9 @@ TODO
 
 TODO: Fortælle gutter om TODO
 
+TODO: Tjek for registrerede gestures ved startup, 
+og lade bruger vælge om man vil tage dem om eller fortsætte til main loop
+
 NOTE:
 Til fremvisning, hav alm display, binær display, og et tredje vindue 
 der viser den gesture den matcher med
