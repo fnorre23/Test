@@ -199,10 +199,11 @@ current_state = 'capture_gesture1'
 while current_state:
     # Capture frame-by-frame
     ret, frame = cap.read()
-    raw_frame = cv2.flip(frame, 1)  # Flip the frame horizontally (mirror effect)
-    
     if not ret:
         break
+    
+    raw_frame = cv2.flip(frame, 1)  # Flip the frame horizontally (mirror effect)
+    
 
     #Define the key press
     key = cv2.waitKey(1) & 0xFF
