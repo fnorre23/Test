@@ -93,6 +93,8 @@ def state_no_contours(raw_frame):
     cv2.imshow('Video Feed', frame)
     return 'no_contours'
 
+
+#TODO: Samle capture gestures functions til en function
 # State functions
 # Function to handle the state of capturing the first gesture
 def state_capture_gesture1(raw_frame):
