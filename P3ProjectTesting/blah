@@ -1,0 +1,25 @@
+# Function to handle the state of capturing the first gesture
+#def state_capture_gesture1(raw_frame):
+
+    # Display instructions on the frame
+    frame = displayText(raw_frame.copy(), 'Press "s" to save the image, "q" to quit')
+    cv2.imshow('Video Feed', frame)  # Show the frame in the 'Video Feed' window
+
+    if key == ord('s'):  # If 's' key is pressed
+        getBinaryImage(raw_frame, 'gesture1')  # Save the image as 'gesture1'
+        return 'capture_gesture2'  # Transition to the next state
+    
+    return 'capture_gesture1'  # Remain in the current state
+
+# Function to handle the state of capturing the second gesture
+#def state_capture_gesture2(raw_frame):
+
+    # Display instructions on the frame
+    frame = displayText(raw_frame.copy(), 'Press "q" to quit')
+    cv2.imshow('Video Feed', frame)  # Show the frame in the 'Video Feed' window
+
+    if key == ord('s'):  # If 's' key is pressed
+        getBinaryImage(raw_frame, 'gesture2')  # Save the image as 'gesture2'
+        return 'process_gestures'  # Transition to the next state
+
+    return 'capture_gesture2'  # Remain in the current state
