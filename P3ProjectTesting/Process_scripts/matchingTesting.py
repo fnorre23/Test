@@ -167,7 +167,7 @@ while True:
     contours1, hierarchy = cv2.findContours(gesture1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw the contours in red color
-    cv2.drawContours(frame, contours, -1, (0, 0, 255), 3)
+    #cv2.drawContours(frame, contours, -1, (0, 0, 255), 3)
 
     # See if the contours of the live feed match the contours of gesture1
     match = cv2.matchShapes(contours[0], contours1[0], 1, 0.0)
@@ -176,7 +176,7 @@ while True:
 
     # If it has a 80% match, display in the bottom right corner
     if match < 0.2:
-        frame = displayText(frame, 'MATCH!', (400, 400))
+        frame = displayText(frame, 'MATCH!')
 
     # Display the frame
     cv2.imshow('Third Code Block', frame)
