@@ -161,44 +161,7 @@ def state_process_gestures(raw_frame):
     return 'match_gestures'  # Transition to the next state
 
 # Function to handle the state of matching the captured gesture with the live feed
-def state_match_gesture(raw_frame):
-
-    # Load the global variables
-    global contours1, contours2, contours
-
-    # Lappeløsning for nu
-    contours1 = contours[1]
-    contours2 = contours[2]
-
-    # Display instructions on the frame
-    frame = displayText(raw_frame.copy(), '')
-    binary_frame = getBinaryVideo(raw_frame)  # Convert the frame to binary
-
-    # Find the contours in the binary frame
-    contoursLive, _ = cv2.findContours(binary_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Set the contours to compare the gestures with the live feed
-    match_gesture1 = round(cv2.matchShapes(contoursLive[0], contours1[0], 1, 0.0), 2)
-    match_gesture2 = round(cv2.matchShapes(contoursLive[0], contours2[0], 1, 0.0), 2)
-
-    displayMatchAccuracy(frame, match_gesture1)  # Display the match accuracy on the frame
-
-    # If the match is above a certain threshold, display a match message
-    if match_gesture1 < 0.2:
-        frame = displayText(frame, 'Gesture1')
-    elif match_gesture2 < 0.2:
-        frame = displayText(frame, 'Gesture2')
-    else:
-        frame = displayText(frame, 'No gesture')
-
-    # Show the frames in the respective windows
-    cv2.imshow('Video Feed', frame)
-    cv2.imshow('Binary Frame', binary_frame)
-
-    return 'match_gesture'  # Remain in the current state
-
-
-def state_match_gestures2(raw_frame):
+def state_match_gestures(raw_frame):
     global contours
 
     # Display instructions on the frame
@@ -247,11 +210,9 @@ def state_match_gestures2(raw_frame):
 
 # State dictionary
 states = {
-    #'capture_gesture1': state_capture_gesture1,
-   # 'capture_gesture2': state_capture_gesture2,
     'capture_gestures': state_capture_gestures,
     'process_gestures': state_process_gestures,
-    'match_gestures': state_match_gestures2,
+    'match_gestures': state_match_gestures,
     'no_contours': state_no_contours
 }
 
