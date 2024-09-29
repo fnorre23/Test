@@ -1,9 +1,3 @@
-TODO 
-1. Opsætte recognition af live billede mod binær billede
-        Lave if-statements så vi kan recognize flere gestures
-2. Sende data til Unity baseret på hvilken gesture vises
-
-
 TODO: Fortælle gutter om TODO
 
 TODO: Tjek for registrerede gestures ved startup, 
