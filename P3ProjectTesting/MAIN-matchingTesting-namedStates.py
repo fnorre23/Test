@@ -1,6 +1,13 @@
 import cv2
 import numpy as np
 import os
+import socket
+
+#TODO: Vi skal teste gesture matching og se om alt det her er spildt arbejde
+
+#Communication with Unity ####################################################################
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+serverAddressPort = ("127.0.0.1", 5052)
 
 # INITIALIZED VARIABLES #####################################################################
 
@@ -16,7 +23,8 @@ gestures = ['Forward', 'Backward', 'Left', 'Right', 'Stop']
 # Initializing gesture index
 gestureIndex = 0
 
-# Threshold for the binary image processing
+# Threshold for the binary image processing 
+# if the pixel value is below this, it will be turned to black, otherwise white
 white_threshold = 50
 
 # Create a folder to store the images
@@ -26,7 +34,7 @@ if not os.path.exists(folder):
 
 # FUNCTIONS #################################################################################
 
-# Function to manipulate the image 
+# Function to take a picture and make it binary, and saving it to the folder
 def getBinaryImage(frame, gestureName):
     global folder
 
@@ -164,7 +172,7 @@ def state_process_gestures(raw_frame):
 def state_match_gestures(raw_frame):
     global contours
 
-    # Display instructions on the frame
+    # Display the frame with no text
     frame = displayText(raw_frame.copy(), '')
     binary_frame = getBinaryVideo(raw_frame)  # Convert the frame to binary
 
@@ -199,8 +207,13 @@ def state_match_gestures(raw_frame):
     if best_match_index != -1 and best_match_value < 0.2:
         gesture_name = gestures[best_match_index]
         frame = displayText(frame, f'Matched Gesture: {gesture_name}')
+        # Send gesture_name to Unity via UDP
+        sock.sendto(str.encode(gesture_name), serverAddressPort)
+
     else:
-        frame = displayText(frame, 'No matching gesture')
+        frame = displayText(frame, 'No gesture')
+        # Send 'No gesture' to Unity via UDP
+        sock.sendto(str.encode('No gesture'), serverAddressPort)
 
     # Show the frames in the respective windows
     cv2.imshow('Video Feed', frame)
