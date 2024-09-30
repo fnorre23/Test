@@ -18,14 +18,15 @@ filenames = []
 contours = []
 
 # All gestures to be captured
-gestures = ['Forward', 'Backward', 'Left', 'Right', 'Stop']
+gestures = ['Forward', 'Backward']
 
 # Initializing gesture index
 gestureIndex = 0
 
 # Threshold for the binary image processing 
 # if the pixel value is below this, it will be turned to black, otherwise white
-white_threshold = 50
+white_threshold = 140
+match_threshold = 0.4
 
 # Create a folder to store the images
 folder = "images"
@@ -170,7 +171,7 @@ def state_process_gestures(raw_frame):
 
 # Function to handle the state of matching the captured gesture with the live feed
 def state_match_gestures(raw_frame):
-    global contours
+    global contours, match_threshold
 
     # Display the frame with no text
     frame = displayText(raw_frame.copy(), '')
@@ -204,7 +205,7 @@ def state_match_gestures(raw_frame):
     displayMatchAccuracy(frame, round(best_match_value, 2))
 
     # Determine the gesture based on the best match index
-    if best_match_index != -1 and best_match_value < 0.2:
+    if best_match_index != -1 and best_match_value < match_threshold:
         gesture_name = gestures[best_match_index]
         frame = displayText(frame, f'Matched Gesture: {gesture_name}')
         # Send gesture_name to Unity via UDP
