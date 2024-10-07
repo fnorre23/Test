@@ -5,6 +5,13 @@ import socket
 
 #TODO: Vi skal teste gesture matching og se om alt det her er spildt arbejde
 
+#TODO v2 - Crop billedet til hænderne, og kun analyser hænderne for bedre data
+#TODO v2 - Smid process gestures ind i capture gestures state
+
+#TODO Lav setup på bordet
+
+#TODO Dokumenter v1, og test, før vi går videre til v2 - evt test alles hænder 
+
 #Communication with Unity ####################################################################
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 serverAddressPort = ("127.0.0.1", 5052)
@@ -47,15 +54,8 @@ def getBinaryImage(frame, gestureName):
     # Convert the image to grayscale, for easier manipulation
     grayImg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    #TODO: Skal nok laves om til en threshold funktion
     # Converting the image to binary - aka turning light pixels to white and dark pixels to black
-    flattened_image = grayImg.flatten()
-    for i in range(len(flattened_image)):
-        if flattened_image[i] < white_threshold:
-            flattened_image[i] = 0
-        else:
-            flattened_image[i] = 255
-    binaryImg = np.reshape(flattened_image, grayImg.shape)
+    _, binaryImg = cv2.threshold(grayImg, white_threshold, 255, cv2.THRESH_BINARY)
 
     # Save the manipulated image
     binary_filename = os.path.join(folder, f'{gestureName}_binary.png')
@@ -78,16 +78,8 @@ def getBinaryImage(frame, gestureName):
 def getBinaryVideo(frame):
     # Convert the frame to grayscale, for easier manipulation
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    _, binaryImg = cv2.threshold(gray_frame, white_threshold, 255, cv2.THRESH_BINARY)
 
-    #TODO: Skal nok laves om til en threshold funktion
-    # Converting the image to binary - aka turning light pixels to white and dark pixels to black
-    flattened_frame = gray_frame.flatten()
-    for i in range(len(flattened_frame)):
-        if flattened_frame[i] < white_threshold:
-            flattened_frame[i] = 0
-        else:
-            flattened_frame[i] = 255
-    binaryImg = np.reshape(flattened_frame, gray_frame.shape)
 
     return binaryImg
 
@@ -147,6 +139,7 @@ def state_capture_gestures(raw_frame):
 
 # Function to handle the state of processing the gestures
 # It is getting the contours of all the gestures, so as not to load during runtime
+#TODO Lav til funktion
 def state_process_gestures(raw_frame):
     global filenames, contours
 
@@ -160,7 +153,10 @@ def state_process_gestures(raw_frame):
             if gesture is None:
                 print(f"Error: File {filename} not found.")
                 continue
-            contoursGesture, _ = cv2.findContours(gesture, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contoursGesture, hierachy = cv2.findContours(gesture, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+            print(f'Number of contours in {filename}: {len(hierachy)}')
+
             if len(contoursGesture) == 0:
                 print(f"No contours found in {filename}")
             contours.append(contoursGesture)
@@ -188,6 +184,7 @@ def state_match_gestures(raw_frame):
     best_match_value = float('inf')
     best_match_index = -1
 
+    #TODO Måske lav den her del til en funktion?
     # Iterate through the contours array and compare with live contours
     for i, gesture_contours in enumerate(contours):
         if len(gesture_contours) == 0:
@@ -195,7 +192,7 @@ def state_match_gestures(raw_frame):
 
         match_value = cv2.matchShapes(contoursLive[0], gesture_contours[0], 1, 0.0)
 
-        print(f"Gesture: {gestures[i]}, Match Value: {match_value}")  # Debug print
+        #print(f"Gesture: {gestures[i]}, Match Value: {match_value}")  # Debug print
 
         if match_value < best_match_value:
             best_match_value = match_value

@@ -12,6 +12,7 @@ import socket
 #TODO Dokumenter v1, og test, før vi går videre til v2 - evt test alles hænder 
 
 #TODO v2 - Crop billedet til hænderne, og kun analyser hænderne for bedre data
+#TODO v2 - Smid process gestures ind i capture gestures state
 
 #Communication with Unity ####################################################################
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
