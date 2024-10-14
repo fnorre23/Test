@@ -11,6 +11,8 @@ import socket
 
 #TODO Dokumenter v1, og test, før vi går videre til v2 - evt test alles hænder 
 
+#TODO VILLE v1 VIRKER BEDRE VED AT FJERNE ARMENE ALENE?
+
 #Communication with Unity ####################################################################
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 serverAddressPort = ("127.0.0.1", 5052)
@@ -40,6 +42,8 @@ if not os.path.exists(folder):
     os.makedirs(folder)
 
 # FUNCTIONS #################################################################################
+
+# FUNCTIONS UNDER TESTING - PROBABLY FROM CO-PILOT
 
 # RELEVANT, DIRECT MANIPULATION
 def getBinaryImage(frame, gestureName):
@@ -98,7 +102,6 @@ def getBinaryVideo(frame):
     # Convert the frame to grayscale, for easier manipulation
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     _, binaryImg = cv2.threshold(gray_frame, white_threshold, 255, cv2.THRESH_BINARY)
-
 
     return binaryImg
 
@@ -203,7 +206,7 @@ def state_capture_gestures(raw_frame):
         # Handle keyboard events
         key = cv2.waitKey(1) & 0xFF
         if key == ord('s'):
-            binaryImg = getBinaryImage(raw_frame, gesture) 
+            binaryImg = getBinaryImage(cropped_frame, gesture) # Uses the cropped image for processing
             process_gesture(binaryImg)
             gestureIndex += 1  # Move to the next gesture
             print(f'Current index:{gestureIndex}')
